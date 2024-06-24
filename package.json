@@ -12,9 +12,9 @@
     "@cypress/xpath": "^2.0.3",
     "cypress": "^12.0.0",
     "cypress-xpath": "^2.0.1",
-    "webpack": "^5.91.0"
+    "mochawesome": "^7.1.3"
   },
   "dependencies": {
-    "@vitejs/plugin-react": "^4.2.1"
+    "cypress-mochawesome-reporter": "^3.8.2"
   }
 }

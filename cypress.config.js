@@ -1,12 +1,13 @@
 const { defineConfig } = require("cypress");
 module.exports = defineConfig({
+  reporter: 'cypress-mochawesome-reporter',
   chromeWebSecurity: false,
-  defaultCommandTimeout: 20000,
   e2e: {
-    baseUrl: 'http://kasirdemo.belajarqa.com',
-    setupNodeEvents(on, config) {
-      // implement node event listeners here
-    },
+        experimentalRunAllSpecs : true,
+        baseUrl: 'http://kasirdemo.belajarqa.com',
+        setupNodeEvents(on, config) {
+        require('cypress-mochawesome-reporter/plugin')(on);
+        },
+    video : false
   },
-  video: false
 });
