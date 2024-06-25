@@ -134,3 +134,9 @@ module.exports = new locatorRegister();
     });
     })
     ```
+4. Execute Test Case
+   
+  After we create a test case, we can run it using Cypress. To run the test case, we can click the run button on Cypress. We will get         the test results in the form of a report.
+
+  ## Test Documentation
+  [View Test Report](https://hasoloan7.github.io/Test-FE-Kasir-Demo/cypress/reports/html/index.html)
