@@ -34,5 +34,103 @@
 
 - Implementation
 
-1. create a loginData.json file inside the fixture folder and paste the following test data in it:
- 
+1. create a registerData.json file inside the fixture folder and paste the following test data in it:
+ ```json
+{
+ "namaToko": "parkut",
+ "email": "pareanahasoloansilalahi@gmail.com",
+ "password": "Hasoloan123"
+}
+```
+2. Create a folder called locator inside the cypress folder, then create a locatorRegister.js file inside the folder and paste the following code:
+```javascript
+import data from '../../fixtures/registerData.json'
+class locatorRegister {
+    
+    element = {
+        registerButton: () => cy.get("a[href='/register']"),
+        namaTokoBox: () => cy.get("#name"),
+        emailBox: () => cy.get("#email"),
+        passwordBox: () => cy.get("#password"),
+        daftarIcon: () => cy.get("button[type='submit']"),
+        succesMessage: () => cy.get(".chakra-toast"),
+        errorMessage: () => cy.get(".chakra-alert")
+    }
+
+    namaToko_Email_andPasswordEnter(){
+        this.element.registerButton().click(),
+        this.element.namaTokoBox().type(data.namaToko),
+        this.element.emailBox().type(data.email),
+        this.element.passwordBox().type(data.password),
+        this.element.daftarIcon().click(),
+        this.element.succesMessage().should("be.visible").and("have.text", "Toko berhasil didaftarkananda dapat menggunakan login sekarang")
+        cy.url().should("eq", "http://kasirdemo.belajarqa.com/login")
+    }
+    emptyNamaToko_EmailAndPasswordEntered(){
+        this.element.registerButton().click(),
+        this.element.namaTokoBox().clear(),
+        this.element.emailBox().type(data.email),
+        this.element.passwordBox().type(data.password),
+        this.element.daftarIcon().click(),
+        this.element.errorMessage().should("be.visible").and("have.text", '"name" is not allowed to be empty')
+    }
+
+    emptyEmail_NamaTokoAndPasswordEntered(){
+        this.element.registerButton().click(),
+        this.element.namaTokoBox().type(data.namaToko),
+        this.element.emailBox().clear(),
+        this.element.passwordBox().type(data.password),
+        this.element.daftarIcon().click(),
+        this.element.errorMessage().should("be.visible").and("have.text", '"email" is not allowed to be empty')
+    }
+
+    emptyPassword_NamaTokoAndEmailEntered(){
+        this.element.registerButton().click(),
+        this.element.namaTokoBox().type(data.namaToko),
+        this.element.emailBox().type(data.email),
+        this.element.passwordBox().clear(),
+        this.element.daftarIcon().click(),
+        this.element.errorMessage().should("be.visible").and("have.text", '"password" is not allowed to be empty')
+    }
+
+    emptyPasswordNamaTokoAndEmail(){
+        this.element.registerButton().click(),
+        this.element.namaTokoBox().clear(),
+        this.element.emailBox().clear(),
+        this.element.passwordBox().clear,
+        this.element.daftarIcon().click(),
+        this.element.errorMessage().should("be.visible").and("have.text", '"name" is not allowed to be empty')
+    }
+}
+module.exports = new locatorRegister();
+```
+3. create the cypress test file named register.cy.js inside the e2e folder and paste following code in it:
+   ```javascript
+   import locatorRegister from './locator/locatorRegister'
+    describe('Register', () => {
+    it("Succes register", () => {
+        cy.visit("/");
+        locatorRegister.namaToko_Email_andPasswordEnter();
+    });
+
+    it("Should display an error message with an empty nama toko", () => {
+        cy.visit("/");
+        locatorRegister.emptyNamaToko_EmailAndPasswordEntered();
+    });
+
+    it("Should display an error message with an empty email", () => {
+        cy.visit("/");
+        locatorRegister.emptyEmail_NamaTokoAndPasswordEntered();
+    });
+
+    it("Should display an error message with an empty password", () => {
+        cy.visit("/");
+        locatorRegister.emptyPassword_NamaTokoAndEmailEntered();
+    });
+
+    it("Should display an error message with an empty nama toko, email, dan password", () => {
+        cy.visit("/");
+        locatorRegister.emptyPasswordNamaTokoAndEmail();
+    });
+    })
+    ```
